@@ -29,20 +29,20 @@ use CentralDesktop\Graph;
  *
  * @package CentralDesktop\Graph\Graph
  */
-class DirectedGraph extends Spl\Graph {
+class DirectedGraph extends Graph\Graph {
 
     /**
-     * @param Spl\Vertex $source
-     * @param Spl\Vertex $target
-     * @return Spl\Edge|null
+     * @param Graph\Vertex $source
+     * @param Graph\Vertex $target
+     * @return Graph\Edge|null
      */
-    public function get_edge(Spl\Vertex $source, Spl\Vertex $target) {
+    public function get_edge(Graph\Vertex $source, Graph\Vertex $target) {
         if ($this->has_vertex($source) &&
             $this->has_vertex($target)) {
 
             $edges = $this->get_outgoing_edges_of($source);
             /**
-             * @var $edge Spl\Edge
+             * @var $edge Graph\Edge
              */
             foreach ($edges as $edge) {
                 if ($edge->get_target() === $target) {
@@ -54,7 +54,7 @@ class DirectedGraph extends Spl\Graph {
         return null;
     }
 
-    public function get_outgoing_edges_of(Spl\Vertex $vertex) {
+    public function get_outgoing_edges_of(Graph\Vertex $vertex) {
         $edges = new \SplObjectStorage();
 
         // @TODO track this somewhere
@@ -62,11 +62,11 @@ class DirectedGraph extends Spl\Graph {
         return $this->get_edges();
     }
 
-    public function in_degree_of(Spl\Vertex $vertex) {
+    public function in_degree_of(Graph\Vertex $vertex) {
         return $vertex->predecessors->count();
     }
 
-    public function out_degree_of(Spl\Vertex $vertex) {
+    public function out_degree_of(Graph\Vertex $vertex) {
         return $vertex->successors->count();
     }
 }
