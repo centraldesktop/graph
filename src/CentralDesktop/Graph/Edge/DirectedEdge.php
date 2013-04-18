@@ -32,13 +32,13 @@ use Psr\Log\NullLogger;
  *
  * @package CentralDesktop\Graph\Edge
  */
-class DirectedEdge extends Spl\Edge {
+class DirectedEdge extends Graph\Edge {
 
     /**
-     * @param Spl\Vertex $source
-     * @param Spl\Vertex $target
+     * @param Graph\Vertex $source
+     * @param Graph\Vertex $target
      */
-    public function __construct(Spl\Vertex $source, Spl\Vertex $target) {
+    public function __construct(Graph\Vertex $source, Graph\Vertex $target) {
         $this->vertices = new \SplObjectStorage();
 
         $this->source = $source;

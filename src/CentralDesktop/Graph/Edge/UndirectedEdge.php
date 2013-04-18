@@ -33,13 +33,13 @@ use SplObjectStorage;
  *
  * @package CentralDesktop\Graph\Edge
  */
-class UndirectedEdge extends Spl\Edge {
+class UndirectedEdge extends Graph\Edge {
 
     /**
-     * @param Spl\Vertex $source
-     * @param Spl\Vertex $target
+     * @param Graph\Vertex $source
+     * @param Graph\Vertex $target
      */
-    public function __construct(Spl\Vertex $source, Spl\Vertex $target) {
+    public function __construct(Graph\Vertex $source, Graph\Vertex $target) {
         $this->vertices = new SplObjectStorage();
         $this->source = $source;
         $this->target = $target;

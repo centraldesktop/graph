@@ -3,7 +3,7 @@
 <phpunit bootstrap="test/bootstrap.php" colors="true">
     <testsuites>
         <testsuite name="CD Spl Test Suite">
-            <directory>test/src/CentralDesktop/Spl/Test/</directory>
+            <directory>test/src/CentralDesktop/Graph/Test/</directory>
         </testsuite>
     </testsuites>
 
