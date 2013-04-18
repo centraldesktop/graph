@@ -29,20 +29,20 @@ use CentralDesktop\Graph;
  *
  * @package CentralDesktop\Graph\Graph
  */
-class UndirectedGraph extends Spl\Graph {
+class UndirectedGraph extends Graph\Graph {
 
     /**
-     * @param Spl\Vertex $source
-     * @param Spl\Vertex $target
-     * @return Spl\Edge|null
+     * @param Graph\Vertex $source
+     * @param Graph\Vertex $target
+     * @return Graph\Edge|null
      */
-    public function get_edge(Spl\Vertex $source, Spl\Vertex $target) {
+    public function get_edge(Graph\Vertex $source, Graph\Vertex $target) {
         if ($this->vertices->contains($source) &&
             $this->vertices->contains($target)) {
 
             $edges = $this->get_edges_of($source);
             /**
-             * @var $edge Spl\Edge
+             * @var $edge Graph\Edge
              */
             foreach ($edges as $edge) {
                 if ($edge->get_vertices()->contains($source) &&
@@ -55,7 +55,7 @@ class UndirectedGraph extends Spl\Graph {
         return null;
     }
 
-    public function get_edges_of(Spl\Vertex $vertex) {
+    public function get_edges_of(Graph\Vertex $vertex) {
         $edges = new \SplObjectStorage();
 
         // @TODO track this somewhere
@@ -63,10 +63,10 @@ class UndirectedGraph extends Spl\Graph {
         return $this->get_edges();
     }
 
-    public function degree_of(Spl\Vertex $vertex) {
+    public function degree_of(Graph\Vertex $vertex) {
         $degree = 0;
         /**
-         * @var Spl\Edge $edge
+         * @var Graph\Edge $edge
          */
         foreach ($this->get_edges() as $edge) {
             if ($edge->get_vertices()->contains($vertex)) {
