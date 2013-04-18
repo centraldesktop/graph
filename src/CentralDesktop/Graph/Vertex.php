@@ -24,9 +24,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
 use SplObjectStorage;
-use CentralDesktop\Graph;
-use CentralDesktop\Graph\Exception;
-
 
 /**
  * Class Vertex
