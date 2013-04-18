@@ -18,7 +18,7 @@
  */
 
 
-namespace CentralDesktop\Spl;
+namespace CentralDesktop\Graph;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
@@ -30,7 +30,7 @@ use SplObjectStorage;
  *
  * Defines a generic graph structure.
  *
- * @package CentralDesktop\Spl
+ * @package CentralDesktop\Graph
  */
 abstract class Graph {
 

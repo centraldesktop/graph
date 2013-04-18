@@ -1,6 +1,8 @@
 {
-    "name": "centraldesktop/spl",
+    "name": "centraldesktop/graph",
+    "description": "Basic object graph traversal library",
 
+    "license" : "Apache-2.0",
     "require": {
         "php": ">=5.3.6",
         "psr/log": "~1.0"

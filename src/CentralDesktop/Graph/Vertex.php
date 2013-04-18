@@ -18,20 +18,22 @@
  */
 
 
-namespace CentralDesktop\Spl;
+namespace CentralDesktop\Graph;
 
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
 use SplObjectStorage;
-use CentralDesktop\Spl;
+use CentralDesktop\Graph;
+use CentralDesktop\Graph\Exception;
+
 
 /**
  * Class Vertex
  *
  *
  *
- * @package CentralDesktop\Spl
+ * @package CentralDesktop\Graph
  */
 class Vertex {
 

@@ -18,18 +18,18 @@
  */
 
 
-namespace CentralDesktop\Spl\Graph;
+namespace CentralDesktop\Graph\Graph;
 
-use CentralDesktop\Spl;
+use CentralDesktop\Graph;
 
 /**
- * Class UndirectedGraph
+ * Class DirectedGraph
  *
- * Order of Edge vertices DOES NOT matter.
+ * Order of Edge vertices DOES matter.
  *
- * @package CentralDesktop\Spl\Graph
+ * @package CentralDesktop\Graph\Graph
  */
-class UndirectedGraph extends Spl\Graph {
+class DirectedGraph extends Spl\Graph {
 
     /**
      * @param Spl\Vertex $source
@@ -37,16 +37,15 @@ class UndirectedGraph extends Spl\Graph {
      * @return Spl\Edge|null
      */
     public function get_edge(Spl\Vertex $source, Spl\Vertex $target) {
-        if ($this->vertices->contains($source) &&
-            $this->vertices->contains($target)) {
+        if ($this->has_vertex($source) &&
+            $this->has_vertex($target)) {
 
-            $edges = $this->get_edges_of($source);
+            $edges = $this->get_outgoing_edges_of($source);
             /**
              * @var $edge Spl\Edge
              */
             foreach ($edges as $edge) {
-                if ($edge->get_vertices()->contains($source) &&
-                    $edge->get_vertices()->contains($target)) {
+                if ($edge->get_target() === $target) {
                     return $edge;
                 }
             }
@@ -55,7 +54,7 @@ class UndirectedGraph extends Spl\Graph {
         return null;
     }
 
-    public function get_edges_of(Spl\Vertex $vertex) {
+    public function get_outgoing_edges_of(Spl\Vertex $vertex) {
         $edges = new \SplObjectStorage();
 
         // @TODO track this somewhere
@@ -63,17 +62,11 @@ class UndirectedGraph extends Spl\Graph {
         return $this->get_edges();
     }
 
-    public function degree_of(Spl\Vertex $vertex) {
-        $degree = 0;
-        /**
-         * @var Spl\Edge $edge
-         */
-        foreach ($this->get_edges() as $edge) {
-            if ($edge->get_vertices()->contains($vertex)) {
-                $degree++;
-            }
-        }
+    public function in_degree_of(Spl\Vertex $vertex) {
+        return $vertex->predecessors->count();
+    }
 
-        return $degree;
+    public function out_degree_of(Spl\Vertex $vertex) {
+        return $vertex->successors->count();
     }
 }

@@ -1,21 +1,21 @@
 <?php
 
-namespace CentralDesktop\Spl\Test;
-use CentralDesktop\Spl;
-use CentralDesktop\Spl\Edge;
+namespace CentralDesktop\Graph\Test;
+use CentralDesktop\Graph;
+use CentralDesktop\Graph\Edge;
 
 class GraphTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider add_vertex_provider
      *
-     * @param Spl\Graph $graph
-     * @param Spl\Vertex $vertex
+     * @param Graph\Graph $graph
+     * @param Graph\Vertex $vertex
      * @param bool $has_vertex
      * @param bool $expected_return
      * @param array $expected_vertices
      */
-    public function testAddVertex(Spl\Graph $graph, Spl\Vertex $vertex, $has_vertex, $expected_return, $expected_vertices) {
+    public function testAddVertex(Graph\Graph $graph, Graph\Vertex $vertex, $has_vertex, $expected_return, $expected_vertices) {
         $graph->expects($this->any())
             ->method('has_vertex')
             ->will($this->returnValue($has_vertex));
@@ -27,15 +27,15 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function add_vertex_provider() {
-        $vertex = new Spl\Vertex(null);
+        $vertex = new Graph\Vertex(null);
 
-        $contains_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $contains_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct', 'has_vertex'))
             ->getMockForAbstractClass();
 
         $contains_graph->add_vertex($vertex);
 
-        $does_not_contain_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $does_not_contain_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct', 'has_vertex'))
             ->getMockForAbstractClass();
 
@@ -74,13 +74,13 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider add_edge_provider
      *
-     * @param Spl\Graph $graph
-     * @param Spl\Edge $edge
+     * @param Graph\Graph $graph
+     * @param Graph\Edge $edge
      * @param bool $expected_return
      * @param array $expected_vertices
      * @param array $expected_edges
      */
-    public function testAddEdge(Spl\Graph $graph, Spl\Edge $edge, $expected_return, $expected_vertices, $expected_edges) {
+    public function testAddEdge(Graph\Graph $graph, Graph\Edge $edge, $expected_return, $expected_vertices, $expected_edges) {
         $this->assertEquals($expected_return, $graph->add_edge($edge));
         foreach ($expected_vertices as $vertex) {
             $this->assertTrue($graph->get_vertices()->contains($vertex));
@@ -92,35 +92,35 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function add_edge_provider() {
-        $a = new Spl\Vertex('a');
-        $b = new Spl\Vertex('b');
-        $c = new Spl\Vertex('c');
+        $a = new Graph\Vertex('a');
+        $b = new Graph\Vertex('b');
+        $c = new Graph\Vertex('c');
 
         $edge = new Edge\DirectedEdge($a, $b);
 
-        $contains_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $contains_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct'))
             ->getMockForAbstractClass();
 
         $contains_graph->add_edge($edge);
 
-        $does_not_contain_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $does_not_contain_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct'))
             ->getMockForAbstractClass();
 
-        $contains_a_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $contains_a_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct'))
             ->getMockForAbstractClass();
 
         $contains_a_graph->add_vertex($a);
 
-        $contains_b_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $contains_b_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct'))
             ->getMockForAbstractClass();
 
         $contains_b_graph->add_vertex($b);
 
-        $contains_c_graph = $this->getMockBuilder('\CentralDesktop\Spl\Graph')
+        $contains_c_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
             ->setMethods(array('__construct'))
             ->getMockForAbstractClass();
 

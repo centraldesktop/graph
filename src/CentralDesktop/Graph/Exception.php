@@ -17,18 +17,35 @@
  */
 
 
-namespace CentralDesktop\Spl\Exception;
-use CentralDesktop\Spl;
+namespace CentralDesktop\Graph;
 
-class DuplicateVertexException extends Spl\Exception {
+/**
+ * A Graph Exception
+ */
+class Exception extends \Exception {
+    protected $_details;
 
     /**
      * Constructor
      *
-     * @param Spl\Vertex $vertex the vertex that caused this error
+     * @param string $message Error message
+     * @param int    $code    Error code
+     * @param string $details Graph error details
      */
     public
-    function __construct(Spl\Vertex $vertex) {
-        parent::__construct($vertex->__toString());
+    function __construct($message = null, $code = 0, $details = '') {
+        $this->_details = $details;
+
+        parent::__construct($message, $code);
+    }
+
+    /**
+     * Graph error details
+     *
+     * @return string
+     */
+    public
+    function getDetails() {
+        return $this->_details;
     }
 }

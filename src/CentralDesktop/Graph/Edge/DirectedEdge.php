@@ -18,64 +18,38 @@
  */
 
 
-namespace CentralDesktop\Spl;
+namespace CentralDesktop\Graph\Edge;
 
+use CentralDesktop\Graph;
 use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\NullLogger;
-use SplObjectStorage;
 
 /**
  * Class Edge
  *
  *
  *
- * @package CentralDesktop\Spl
+ * @package CentralDesktop\Graph\Edge
  */
-abstract class Edge {
+class DirectedEdge extends Spl\Edge {
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @param Spl\Vertex $source
+     * @param Spl\Vertex $target
      */
-    protected $logger;
+    public function __construct(Spl\Vertex $source, Spl\Vertex $target) {
+        $this->vertices = new \SplObjectStorage();
 
-    /**
-     * Source Vertex
-     *
-     * @var Vertex
-     */
-    protected $source;
+        $this->source = $source;
+        $this->target = $target;
 
-    /**
-     * Target Vertex
-     *
-     * @var Vertex
-     */
-    protected $target;
+        $this->source->add_successor($target);
+        $this->target->add_predecessor($source);
 
-    /**
-     * @var SplObjectStorage
-     */
-    protected $vertices;
+        $this->vertices->attach($source);
+        $this->vertices->attach($target);
 
-    /**
-     * @return Vertex
-     */
-    public function get_source() {
-        return $this->source;
-    }
-
-    /**
-     * @return Vertex
-     */
-    public function get_target() {
-        return $this->target;
-    }
-
-    /**
-     * @return SplObjectStorage
-     */
-    public function get_vertices() {
-        return $this->vertices;
+        $this->logger = new NullLogger();
     }
 }
