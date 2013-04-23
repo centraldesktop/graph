@@ -75,92 +75,65 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
      * @dataProvider add_edge_provider
      *
      * @param Graph\Graph $graph
-     * @param Graph\Edge $edge
+     * @param Graph\Vertex $source
+     * @param Graph\Vertex $target
      * @param bool $expected_return
      * @param array $expected_vertices
-     * @param array $expected_edges
      */
-    public function testAddEdge(Graph\Graph $graph, Graph\Edge $edge, $expected_return, $expected_vertices, $expected_edges) {
-        $this->assertEquals($expected_return, $graph->add_edge($edge));
+    public function testAddEdge(Graph\Graph $graph, Graph\Vertex $source, Graph\Vertex $target, $expected_return, $expected_vertices) {
+        $this->assertEquals($expected_return, $graph->add_edge($source, $target));
         foreach ($expected_vertices as $vertex) {
             $this->assertTrue($graph->get_vertices()->contains($vertex));
         }
 
-        foreach ($expected_edges as $edge) {
-            $this->assertTrue($graph->get_edges()->contains($edge));
-        }
+        $this->assertTrue($graph->has_edge($source, $target));
     }
 
     public function add_edge_provider() {
-        $a = new Graph\Vertex('a');
-        $b = new Graph\Vertex('b');
-        $c = new Graph\Vertex('c');
+        $source_a = new Graph\Vertex('a');
+        $target_a = new Graph\Vertex('b');
 
-        $edge = new Edge\DirectedEdge($a, $b);
+        $source_b = new Graph\Vertex('c');
+        $target_b = new Graph\Vertex('d');
 
-        $contains_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct'))
-            ->getMockForAbstractClass();
+        $source_c = new Graph\Vertex('e');
+        $target_c = new Graph\Vertex('f');
 
-        $contains_graph->add_edge($edge);
+        $contains_both_graph = $this->getMock('\CentralDesktop\Graph\Graph\DirectedGraph', null);
 
-        $does_not_contain_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct'))
-            ->getMockForAbstractClass();
+        $contains_source_graph = $this->getMock('\CentralDesktop\Graph\Graph\DirectedGraph', null);
 
-        $contains_a_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct'))
-            ->getMockForAbstractClass();
-
-        $contains_a_graph->add_vertex($a);
-
-        $contains_b_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct'))
-            ->getMockForAbstractClass();
-
-        $contains_b_graph->add_vertex($b);
-
-        $contains_c_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct'))
-            ->getMockForAbstractClass();
-
-        $contains_c_graph->add_vertex($c);
+        $contains_target_graph = $this->getMock('\CentralDesktop\Graph\Graph\DirectedGraph', null);
+        $contains_target_graph->add_vertex($target_c);
 
         return array(
             array(
-                $contains_graph,
-                $edge,
+                $contains_both_graph,
+                $source_a,
+                $target_a,
+                true,
+                array($source_a, $target_a)
+            ),
+            array(
+                $contains_both_graph,  // second time false
+                $source_a,
+                $target_a,
                 false,
-                array($a, $b),
-                array($edge)
+                array($source_a, $target_a)
             ),
             array(
-                $does_not_contain_graph,
-                $edge,
+                $contains_source_graph,
+                $source_b,
+                $target_b,
                 true,
-                array($a, $b),
-                array($edge)
+                array($source_b, $target_b)
             ),
             array(
-                $contains_a_graph,
-                $edge,
+                $contains_target_graph,
+                $source_c,
+                $target_c,
                 true,
-                array($a, $b),
-                array($edge)
-            ),
-            array(
-                $contains_b_graph,
-                $edge,
-                true,
-                array($a, $b),
-                array($edge)
-            ),
-            array(
-                $contains_c_graph,
-                $edge,
-                true,
-                array($a, $b, $c),
-                array($edge)
+                array($source_c, $target_c)
             )
         );
     }

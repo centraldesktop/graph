@@ -87,21 +87,26 @@ abstract class Graph {
     abstract public function get_edge(Vertex $source, Vertex $target);
 
     /**
+     * @param Vertex $source
+     * @param Vertex $target
+     * @return Edge
+     */
+    abstract public function create_edge(Vertex $source, Vertex $target);
+
+    /**
      * Add an Edge(u, v) to Graph
      *
      * A vertex can only exist once in the graph.
      * If at least one vertex fails to be added this method will return false.
      *
-     * @param Edge $edge
+     * @param Vertex $source
+     * @param Vertex $target
      * @return bool
      */
-    public function add_edge(Edge $edge) {
-        if ($this->has_edge($edge)) {
+    public function add_edge(Vertex $source, Vertex $target) {
+        if ($this->has_edge($source, $target)) {
             return false;
         }
-
-        $source = $edge->get_source();
-        $target = $edge->get_target();
 
         /**
          * Update vertices if needed.
@@ -109,6 +114,7 @@ abstract class Graph {
         $this->add_vertex($source);
         $this->add_vertex($target);
 
+        $edge = $this->create_edge($source, $target);
         $this->edges->attach($edge);
         return true;
     }
@@ -117,8 +123,19 @@ abstract class Graph {
      * @param Edge $edge
      * @return bool
      */
-    public function has_edge(Edge $edge) {
-        return $this->edges->contains($edge);
+    public function has_edge(Vertex $source, Vertex $target) {
+        if ($this->has_vertex($source) && $this->has_vertex($target)) {
+            /**
+             * @var $edge Edge
+             */
+            foreach ($this->get_edges() as $edge) {
+                if ($edge->get_source() === $source && $edge->get_target() === $target) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -126,6 +143,15 @@ abstract class Graph {
      * @return bool
      */
     public function remove_edge(Edge $edge) {
+        $source = $edge->get_source();
+        $target = $edge->get_target();
+
+        $source->successors->detach($target);
+        $target->successors->detach($source);
+
+        $source->predecessors->detach($target);
+        $target->predecessors->detach($source);
+
         $this->get_edges()->detach($edge);
         return true;
     }

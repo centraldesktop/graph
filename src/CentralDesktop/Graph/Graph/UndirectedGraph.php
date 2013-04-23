@@ -55,6 +55,15 @@ class UndirectedGraph extends Graph\Graph {
         return null;
     }
 
+    /**
+     * @param Graph\Vertex $source
+     * @param Graph\Vertex $target
+     * @return Graph\Edge
+     */
+    public function create_edge(Graph\Vertex $source, Graph\Vertex $target) {
+        return new Graph\Edge\UndirectedEdge($source, $target);
+    }
+
     public function get_edges_of(Graph\Vertex $vertex) {
         $edges = new \SplObjectStorage();
 
