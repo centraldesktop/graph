@@ -45,7 +45,7 @@ class DirectedGraph extends Graph\Graph {
              * @var $edge Graph\Edge
              */
             foreach ($edges as $edge) {
-                if ($edge->get_target() === $target) {
+                if ($edge->get_source() === $source && $edge->get_target() === $target) {
                     return $edge;
                 }
             }
