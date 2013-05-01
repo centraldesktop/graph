@@ -21,6 +21,7 @@
 namespace CentralDesktop\Graph\Graph;
 
 use CentralDesktop\Graph;
+use SplObjectStorage;
 
 /**
  * Class UndirectedGraph
@@ -61,28 +62,27 @@ class UndirectedGraph extends Graph\Graph {
      * @return Graph\Edge
      */
     public function create_edge(Graph\Vertex $source, Graph\Vertex $target) {
-        return new Graph\Edge\UndirectedEdge($source, $target);
+        $edge = new Graph\Edge\UndirectedEdge($source, $target);
+        $source->add_outgoing_edge($edge);
+        $source->add_incoming_edge($edge);
+        $target->add_outgoing_edge($edge);
+        $target->add_incoming_edge($edge);
+        return $edge;
     }
 
+    /**
+     * @param Graph\Vertex $vertex
+     * @return SplObjectStorage
+     */
     public function get_edges_of(Graph\Vertex $vertex) {
-        $edges = new \SplObjectStorage();
-
-        // @TODO track this somewhere
-
-        return $this->get_edges();
+        return $vertex->outgoing_edges;
     }
 
+    /**
+     * @param Graph\Vertex $vertex
+     * @return int
+     */
     public function degree_of(Graph\Vertex $vertex) {
-        $degree = 0;
-        /**
-         * @var Graph\Edge $edge
-         */
-        foreach ($this->get_edges() as $edge) {
-            if ($edge->get_vertices()->contains($vertex)) {
-                $degree++;
-            }
-        }
-
-        return $degree;
+        return $vertex->outgoing_edges->count();
     }
 }

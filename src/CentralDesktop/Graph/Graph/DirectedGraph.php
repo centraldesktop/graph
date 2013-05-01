@@ -60,21 +60,32 @@ class DirectedGraph extends Graph\Graph {
      * @return Graph\Edge
      */
     public function create_edge(Graph\Vertex $source, Graph\Vertex $target) {
-        return new Graph\Edge\DirectedEdge($source, $target);
+        $edge = new Graph\Edge\DirectedEdge($source, $target);
+        $source->add_outgoing_edge($edge);
+        $target->add_incoming_edge($edge);
+        return $edge;
     }
 
+    /**
+     * @param Graph\Vertex $vertex
+     * @return \SplObjectStorage
+     */
     public function get_outgoing_edges_of(Graph\Vertex $vertex) {
-        $edges = new \SplObjectStorage();
-
-        // @TODO track this somewhere
-
-        return $this->get_edges();
+        return $vertex->outgoing_edges;
     }
 
+    /**
+     * @param Graph\Vertex $vertex
+     * @return int
+     */
     public function in_degree_of(Graph\Vertex $vertex) {
         return $vertex->predecessors->count();
     }
 
+    /**
+     * @param Graph\Vertex $vertex
+     * @return int
+     */
     public function out_degree_of(Graph\Vertex $vertex) {
         return $vertex->successors->count();
     }

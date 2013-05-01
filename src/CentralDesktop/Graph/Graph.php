@@ -128,7 +128,7 @@ abstract class Graph {
             /**
              * @var $edge Edge
              */
-            foreach ($this->get_edges() as $edge) {
+            foreach ($source->outgoing_edges as $edge) {
                 if ($edge->get_source() === $source && $edge->get_target() === $target) {
                     return true;
                 }
@@ -151,6 +151,12 @@ abstract class Graph {
 
         $source->predecessors->detach($target);
         $target->predecessors->detach($source);
+
+        $source->outgoing_edges->detach($edge);
+        $target->outgoing_edges->detach($edge);
+
+        $source->incoming_edges->detach($edge);
+        $target->incoming_edges->detach($edge);
 
         $this->get_edges()->detach($edge);
         return true;

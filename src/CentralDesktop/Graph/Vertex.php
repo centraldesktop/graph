@@ -57,12 +57,24 @@ class Vertex {
     public $successors;
 
     /**
+     * @var SplObjectStorage
+     */
+    public $outgoing_edges;
+
+    /**
+     * @var SplObjectStorage
+     */
+    public $incoming_edges;
+
+    /**
      * @param $data
      */
     public function __construct($data) {
         $this->data = $data;
         $this->predecessors = new SplObjectStorage();
         $this->successors= new SplObjectStorage();
+        $this->outgoing_edges = new SplObjectStorage();
+        $this->incoming_edges = new SplObjectStorage();
         $this->logger = new NullLogger();
     }
 
@@ -98,6 +110,24 @@ class Vertex {
         }
 
         $this->successors->attach($vertex);
+        return $this;
+    }
+
+    /**
+     * @param Edge $edge
+     * @return $this
+     */
+    public function add_outgoing_edge(Edge $edge) {
+        $this->outgoing_edges->attach($edge);
+        return $this;
+    }
+
+    /**
+     * @param Edge $edge
+     * @return $this
+     */
+    public function add_incoming_edge(Edge $edge) {
+        $this->incoming_edges->attach($edge);
         return $this;
     }
 

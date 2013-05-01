@@ -84,6 +84,8 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
         $this->assertEquals($expected_return, $graph->add_edge($source, $target));
         foreach ($expected_vertices as $vertex) {
             $this->assertTrue($graph->get_vertices()->contains($vertex));
+            $this->assertTrue($source->outgoing_edges->contains($graph->get_edge($source, $target)));
+            $this->assertTrue($target->incoming_edges->contains($graph->get_edge($source, $target)));
         }
 
         $this->assertTrue($graph->has_edge($source, $target));
