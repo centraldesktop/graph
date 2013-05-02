@@ -21,6 +21,7 @@
 namespace CentralDesktop\Graph\Graph;
 
 use CentralDesktop\Graph;
+use CentralDesktop\Graph\DirectedGraphTraverser;
 
 /**
  * Class DirectedGraph
@@ -30,6 +31,17 @@ use CentralDesktop\Graph;
  * @package CentralDesktop\Graph\Graph
  */
 class DirectedGraph extends Graph\Graph {
+
+    /**
+     * @var DirectedGraphTraverser
+     */
+    protected $traverser;
+
+    public function __construct() {
+        parent::__construct();
+
+        $this->traverser = new DirectedGraphTraverser($this);
+    }
 
     /**
      * @param Graph\Vertex $source
@@ -88,5 +100,13 @@ class DirectedGraph extends Graph\Graph {
      */
     public function out_degree_of(Graph\Vertex $vertex) {
         return $vertex->successors->count();
+    }
+
+    /**
+     * @param Graph\Vertex $start_vertex
+     * @return array
+     */
+    public function simple_paths(Graph\Vertex $start_vertex) {
+        return $this->traverser->simple_paths($start_vertex);
     }
 }
