@@ -52,11 +52,7 @@ class VertexSet extends SplObjectStorage {
      */
     public
     function getHash(Vertex $vertex) {
-        $hash = $vertex->get_data();
-        if (is_null($hash)) {
-            $hash = "";
-        }
-        return $hash;
+        return $vertex->__toString();
     }
 
     /**
