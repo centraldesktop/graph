@@ -54,7 +54,7 @@ abstract class Graph {
      * default constructor
      */
     public function __construct() {
-        $this->vertices = new SplObjectStorage();
+        $this->vertices = new VertexSet();
         $this->edges = new SplObjectStorage();
         $this->logger = new NullLogger();
     }
@@ -77,6 +77,21 @@ abstract class Graph {
      */
     public function has_vertex(Vertex $vertex) {
         return $this->vertices->contains($vertex);
+    }
+
+    /**
+     * @param $data
+     *
+     * @return Vertex|null
+     */
+    public
+    function get_vertex($data) {
+        $vertex = new Vertex($data);
+        if ($this->has_vertex($vertex)) {
+            return $vertex;
+        }
+
+        return null;
     }
 
     /**

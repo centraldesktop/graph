@@ -139,4 +139,56 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
             )
         );
     }
+
+    /**
+     * @dataProvider get_vertex_provider
+     *
+     * @param Graph\Graph  $graph
+     * @param              $vertex
+     * @param              $expected
+     * @param              $msg
+     */
+    public
+    function testGetVertex(Graph\Graph $graph, $vertex, $expected, $msg) {
+        $this->assertEquals($expected, $graph->get_vertex($vertex), $msg);
+    }
+
+    public
+    function get_vertex_provider() {
+        $graph = new Graph\Graph\DirectedGraph();
+        $vertex_a = new Graph\Vertex('A');
+        $vertex_b = new Graph\Vertex('B');
+        $vertex_c = new Graph\Vertex('C');
+
+        $graph->add_vertex($vertex_a);
+        $graph->add_vertex($vertex_b);
+        $graph->add_vertex($vertex_c);
+
+        return array(
+            array(
+                $graph,
+                'A',
+                $vertex_a,
+                "Expects to have vertex 'A'"
+            ),
+            array(
+                $graph,
+                'B',
+                $vertex_b,
+                "Expects to have vertex 'B'"
+            ),
+            array(
+                $graph,
+                'C',
+                $vertex_c,
+                "Expects to have vertex 'C'"
+            ),
+            array(
+                $graph,
+                'D',
+                null,
+                "Does not expect to have vertex 'D'"
+            )
+        );
+    }
 }
