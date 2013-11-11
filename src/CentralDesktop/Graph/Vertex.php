@@ -134,6 +134,14 @@ class Vertex {
     /**
      * @return string
      */
+    public
+    function get_label() {
+        return $this->__toString();
+    }
+
+    /**
+     * @return string
+     */
     public function __toString() {
         $data = $this->get_data();
         if (is_object($data)) {
