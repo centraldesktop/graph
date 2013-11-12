@@ -143,6 +143,17 @@ class Vertex {
      * @return string
      */
     public function __toString() {
-        return "";
+        $data = $this->get_data();
+        if (is_object($data)) {
+            $hash = spl_object_hash($data);
+        } else {
+            $hash = $data;
+        }
+
+        if (!is_string($hash)) {
+            $hash = "";
+        }
+
+        return $hash;
     }
 }

@@ -66,7 +66,7 @@ class VertexSet extends SplObjectStorage {
             }
         } else {
             parent::attach($vertex, $data);
-        }
+        return $vertex->__toString();
     }
 
     /**
