@@ -49,17 +49,13 @@ class DirectedGraph extends Graph\Graph {
      * @return Graph\Edge|null
      */
     public function get_edge(Graph\Vertex $source, Graph\Vertex $target) {
-        if ($this->has_vertex($source) &&
-            $this->has_vertex($target)) {
-
-            $edges = $this->get_outgoing_edges_of($source);
-            /**
-             * @var $edge Graph\Edge
-             */
-            foreach ($edges as $edge) {
-                if ($edge->get_source() === $source && $edge->get_target() === $target) {
-                    return $edge;
-                }
+        $edges = $this->get_outgoing_edges_of($source);
+        /**
+         * @var $edge Graph\Edge
+         */
+        foreach ($edges as $edge) {
+            if ($edge->get_source() === $source && $edge->get_target() === $target) {
+                return $edge;
             }
         }
 
