@@ -105,4 +105,10 @@ class DirectedGraph extends Graph\Graph {
     public function simple_paths(Graph\Vertex $start_vertex) {
         return $this->traverser->simple_paths($start_vertex);
     }
+
+    public
+    function get_start_vertex() {
+        $this->vertices->rewind();
+        return $this->vertices->current();
+    }
 }

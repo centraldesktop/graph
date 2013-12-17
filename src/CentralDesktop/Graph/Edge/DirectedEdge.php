@@ -39,7 +39,7 @@ class DirectedEdge extends Graph\Edge {
      * @param Graph\Vertex $target
      */
     public function __construct(Graph\Vertex $source, Graph\Vertex $target) {
-        $this->vertices = new \SplObjectStorage();
+        $this->vertices = new Graph\VertexSet();
 
         $this->source = $source;
         $this->target = $target;

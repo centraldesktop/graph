@@ -86,12 +86,21 @@ abstract class Graph {
      */
     public
     function get_vertex($data) {
-        $vertex = new Vertex($data);
+        $vertex = $this->create_vertex($data);
         if ($this->has_vertex($vertex)) {
-            return $vertex;
+            return $this->vertices->offsetGet($vertex);
         }
 
         return null;
+    }
+
+    /**
+     * @param  $data
+     * @return Vertex
+     */
+    public
+    function create_vertex($data) {
+        return new Vertex($data);
     }
 
     /**

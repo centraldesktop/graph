@@ -73,7 +73,7 @@ abstract class Edge {
     }
 
     /**
-     * @return SplObjectStorage
+     * @return VertexSet
      */
     public function get_vertices() {
         return $this->vertices;
