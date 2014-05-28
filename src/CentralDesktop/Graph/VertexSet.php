@@ -20,62 +20,40 @@
 
 namespace CentralDesktop\Graph;
 
-use Psr\Log\LoggerInterface;
-use Psr\Log\LoggerAwareInterface;
-use Psr\Log\NullLogger;
 use SplObjectStorage;
+use ArrayObject;
+use ArrayIterator;
 
 /**
- * Class Edge
+ * Class VertexSet
  *
  *
  *
  * @package CentralDesktop\Graph
  */
-abstract class Edge {
+class VertexSet extends SplObjectStorage {
 
     /**
-     * @var \Psr\Log\LoggerInterface
+     * @param object $vertex
+     * @param null   $data
      */
-    protected $logger;
+    public
+    function attach($vertex, $data = null) {
+        if (is_null($data)) {
+            $data = $vertex;
+        }
 
-    /**
-     * Source Vertex
-     *
-     * @var Vertex
-     */
-    protected $source;
-
-    /**
-     * Target Vertex
-     *
-     * @var Vertex
-     */
-    protected $target;
-
-    /**
-     * @var SplObjectStorage
-     */
-    protected $vertices;
-
-    /**
-     * @return Vertex
-     */
-    public function get_source() {
-        return $this->source;
+        parent::attach($vertex, $data);
     }
 
     /**
-     * @return Vertex
+     * PHP 5>=5.4.0 Implementation
+     * @param Vertex $object
+     *
+     * @return mixed|string
      */
-    public function get_target() {
-        return $this->target;
-    }
-
-    /**
-     * @return VertexSet
-     */
-    public function get_vertices() {
-        return $this->vertices;
+    public
+    function getHash($object) {
+        return $object->__toString();
     }
 }

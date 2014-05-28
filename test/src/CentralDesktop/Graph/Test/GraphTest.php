@@ -1,72 +1,51 @@
 <?php
 
 namespace CentralDesktop\Graph\Test;
-use CentralDesktop\Graph;
+use CentralDesktop\Graph\Graph\DirectedGraph;
+use CentralDesktop\Graph\Graph;
 use CentralDesktop\Graph\Edge;
+use CentralDesktop\Graph\Vertex;
 
 class GraphTest extends \PHPUnit_Framework_TestCase {
 
     /**
      * @dataProvider add_vertex_provider
      *
-     * @param Graph\Graph $graph
-     * @param Graph\Vertex $vertex
-     * @param bool $has_vertex
+     * @param Graph $graph
+     * @param Vertex $vertex
      * @param bool $expected_return
      * @param array $expected_vertices
+     * @param string $message
      */
-    public function testAddVertex(Graph\Graph $graph, Graph\Vertex $vertex, $has_vertex, $expected_return, $expected_vertices) {
-        $graph->expects($this->any())
-            ->method('has_vertex')
-            ->will($this->returnValue($has_vertex));
-
-        $this->assertEquals($expected_return, $graph->add_vertex($vertex));
+    public function testAddVertex(Graph $graph, Vertex $vertex, $expected_return, $expected_vertices, $message) {
+        $this->assertEquals($expected_return, $graph->add_vertex($vertex), $message);
         foreach ($expected_vertices as $vertex) {
-            $this->assertTrue($graph->get_vertices()->contains($vertex));
+            $this->assertTrue($graph->get_vertices()->contains($vertex), $message);
         }
     }
 
     public function add_vertex_provider() {
-        $vertex = new Graph\Vertex(null);
+        $vertex = new Vertex("A");
 
-        $contains_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct', 'has_vertex'))
-            ->getMockForAbstractClass();
-
+        $contains_graph = new Graph\DirectedGraph();
         $contains_graph->add_vertex($vertex);
 
-        $does_not_contain_graph = $this->getMockBuilder('\CentralDesktop\Graph\Graph')
-            ->setMethods(array('__construct', 'has_vertex'))
-            ->getMockForAbstractClass();
+        $does_not_contain_graph = new Graph\DirectedGraph();
 
         return array(
             array(
                 $contains_graph,
                 $vertex,
-                true,
                 false,
-                array()
+                array($vertex),
+                "Expects Vertex($vertex) to not be added twice."
             ),
             array(
                 $does_not_contain_graph,
                 $vertex,
-                false,
                 true,
-                array($vertex)
-            ),
-            array(
-                clone($contains_graph),
-                $vertex,
-                false,
-                true,
-                array($vertex)
-            ),
-            array(
-                clone($does_not_contain_graph),
-                $vertex,
-                true,
-                false,
-                array()
+                array($vertex),
+                "Expects Vertex($vertex) to be added."
             )
         );
     }
@@ -74,13 +53,13 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
     /**
      * @dataProvider add_edge_provider
      *
-     * @param Graph\Graph $graph
-     * @param Graph\Vertex $source
-     * @param Graph\Vertex $target
+     * @param Graph $graph
+     * @param Vertex $source
+     * @param Vertex $target
      * @param bool $expected_return
      * @param array $expected_vertices
      */
-    public function testAddEdge(Graph\Graph $graph, Graph\Vertex $source, Graph\Vertex $target, $expected_return, $expected_vertices) {
+    public function testAddEdge(Graph $graph, Vertex $source, Vertex $target, $expected_return, $expected_vertices) {
         $this->assertEquals($expected_return, $graph->add_edge($source, $target));
         foreach ($expected_vertices as $vertex) {
             $this->assertTrue($graph->get_vertices()->contains($vertex));
@@ -92,14 +71,14 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
     }
 
     public function add_edge_provider() {
-        $source_a = new Graph\Vertex('a');
-        $target_a = new Graph\Vertex('b');
+        $source_a = new Vertex('a');
+        $target_a = new Vertex('b');
 
-        $source_b = new Graph\Vertex('c');
-        $target_b = new Graph\Vertex('d');
+        $source_b = new Vertex('c');
+        $target_b = new Vertex('d');
 
-        $source_c = new Graph\Vertex('e');
-        $target_c = new Graph\Vertex('f');
+        $source_c = new Vertex('e');
+        $target_c = new Vertex('f');
 
         $contains_both_graph = $this->getMock('\CentralDesktop\Graph\Graph\DirectedGraph', null);
 
@@ -136,6 +115,58 @@ class GraphTest extends \PHPUnit_Framework_TestCase {
                 $target_c,
                 true,
                 array($source_c, $target_c)
+            )
+        );
+    }
+
+    /**
+     * @dataProvider get_vertex_provider
+     *
+     * @param Graph  $graph
+     * @param              $vertex
+     * @param              $expected
+     * @param              $msg
+     */
+    public
+    function testGetVertex(Graph $graph, $vertex, $expected, $msg) {
+        $this->assertEquals($expected, $graph->get_vertex($vertex), $msg);
+    }
+
+    public
+    function get_vertex_provider() {
+        $graph = new Graph\DirectedGraph();
+        $vertex_a = new Vertex('A');
+        $vertex_b = new Vertex('B');
+        $vertex_c = new Vertex('C');
+
+        $graph->add_vertex($vertex_a);
+        $graph->add_vertex($vertex_b);
+        $graph->add_vertex($vertex_c);
+
+        return array(
+            array(
+                $graph,
+                'A',
+                $vertex_a,
+                "Expects to have vertex 'A'"
+            ),
+            array(
+                $graph,
+                'B',
+                $vertex_b,
+                "Expects to have vertex 'B'"
+            ),
+            array(
+                $graph,
+                'C',
+                $vertex_c,
+                "Expects to have vertex 'C'"
+            ),
+            array(
+                $graph,
+                'D',
+                null,
+                "Does not expect to have vertex 'D'"
             )
         );
     }
