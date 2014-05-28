@@ -34,227 +34,26 @@ use ArrayIterator;
 class VertexSet extends SplObjectStorage {
 
     /**
-     * @var ArrayObject
-     */
-    private $storage;
-
-    /**
-     * @var ArrayIterator
-     */
-    private $iterator;
-
-    public
-    function __construct() {
-        if (version_compare(PHP_VERSION, '5.4', '<')) {
-            $this->storage = new ArrayObject;
-        }
-    }
-
-    /**
      * @param object $vertex
      * @param null   $data
      */
     public
     function attach($vertex, $data = null) {
-        if ($this->storage instanceof ArrayObject) {
-            if (is_null($data)) {
-                $data = $vertex;
-            }
-            $offset = $this->getHash($vertex);
-            if (!$this->storage->offsetExists($offset)) {
-                $this->storage->offsetSet($offset, $data);
-            }
-        } else {
-            parent::attach($vertex, $data);
+        if (is_null($data)) {
+            $data = $vertex;
         }
-    }
 
-    /**
-     * @param object $vertex
-     *
-     * @return bool
-     */
-    public
-    function contains($vertex) {
-        if ($this->storage instanceof ArrayObject) {
-            return $this->storage->offsetExists($this->getHash($vertex));
-        } else {
-            return parent::contains($vertex);
-        }
-    }
-
-    /**
-     * @return int
-     */
-    public
-    function count() {
-        if ($this->storage instanceof ArrayObject) {
-            return $this->storage->count();
-        } else {
-            return parent::count();
-        }
-    }
-
-    /**
-     * @return mixed|object
-     */
-    public
-    function current() {
-        if ($this->storage instanceof ArrayObject) {
-            if (!$this->iterator instanceof ArrayIterator) {
-                $this->iterator = $this->storage->getIterator();
-            }
-            return $this->iterator->current();
-        } else {
-            return parent::current();
-        }
-    }
-
-    /**
-     * @param object $vertex
-     */
-    public
-    function detach($vertex) {
-        if ($this->storage instanceof ArrayObject) {
-            $offset = $this->getHash($vertex);
-            if ($this->storage->offsetExists($offset)) {
-                $this->storage->offsetUnset($offset);
-            }
-        } else {
-            parent::detach($vertex);
-        }
+        parent::attach($vertex, $data);
     }
 
     /**
      * PHP 5>=5.4.0 Implementation
-     * @param Vertex $vertex
+     * @param Vertex $object
      *
      * @return mixed|string
      */
     public
-    function getHash(Vertex $vertex) {
-        return $vertex->__toString();
-    }
-
-    /**
-     * @return int
-     */
-    public
-    function key() {
-        if ($this->storage instanceof ArrayObject) {
-            if (!$this->iterator instanceof ArrayIterator) {
-                $this->iterator = $this->storage->getIterator();
-            }
-            return $this->iterator->key();
-        } else {
-            return parent::key();
-        }
-    }
-
-    public
-    function next() {
-        if ($this->storage instanceof ArrayObject) {
-            if (!$this->iterator instanceof ArrayIterator) {
-                $this->iterator = $this->storage->getIterator();
-            }
-            $this->iterator->next();
-        } else {
-            parent::next();
-        }
-    }
-
-    /**
-     * @param object $vertex
-     *
-     * @return bool
-     */
-    public
-    function offsetExists($vertex) {
-        return $this->contains($vertex);
-    }
-
-    /**
-     * @param object $vertex
-     *
-     * @return mixed
-     */
-    public
-    function offsetGet($vertex) {
-        if ($this->storage instanceof ArrayObject) {
-            return $this->storage->offsetGet($this->getHash($vertex));
-        } else {
-            return parent::offsetGet($vertex);
-        }
-    }
-
-    /**
-     * @param object $vertex
-     * @param null   $data
-     */
-    public
-    function offsetSet($vertex, $data = null) {
-        $this->attach($vertex, $data);
-    }
-
-    /**
-     * @param object $vertex
-     */
-    public
-    function offsetUnset($vertex) {
-        $this->detach($vertex);
-    }
-
-    public
-    function rewind() {
-        if ($this->storage instanceof ArrayObject) {
-            if (!$this->iterator instanceof ArrayIterator) {
-                $this->iterator = $this->storage->getIterator();
-            }
-            $this->iterator->rewind();
-        } else {
-            parent::rewind();
-        }
-    }
-
-    /**
-     * @return string
-     */
-    public
-    function serialize() {
-        if ($this->storage instanceof ArrayObject) {
-            /**
-             * This is actually not a void function
-             */
-            return $this->storage->serialize();
-        } else {
-            return parent::serialize();
-        }
-    }
-
-    /**
-     * @param string $serialized
-     */
-    public
-    function unserialize($serialized) {
-        if ($this->storage instanceof ArrayObject) {
-            $this->storage->unserialize($serialized);
-        } else {
-            parent::unserialize($serialized);
-        }
-    }
-
-    /**
-     * @return bool
-     */
-    public
-    function valid() {
-        if ($this->storage instanceof ArrayObject) {
-            if (!$this->iterator instanceof ArrayIterator) {
-                $this->iterator = $this->storage->getIterator();
-            }
-            return $this->iterator->valid();
-        } else {
-            return parent::valid();
-        }
+    function getHash($object) {
+        return $object->__toString();
     }
 }
