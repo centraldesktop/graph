@@ -4,7 +4,7 @@
 
     "license" : "Apache-2.0",
     "require": {
-        "php": ">=5.3.6",
+        "php": ">=5.4.0",
         "psr/log": "~1.0"
     },
     "require-dev": {
