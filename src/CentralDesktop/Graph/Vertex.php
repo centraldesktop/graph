@@ -47,12 +47,12 @@ class Vertex {
     protected $data;
 
     /**
-     * @var SplObjectStorage
+     * @var VertexSet
      */
     public $predecessors;
 
     /**
-     * @var SplObjectStorage
+     * @var VertexSet
      */
     public $successors;
 
@@ -71,8 +71,8 @@ class Vertex {
      */
     public function __construct($data) {
         $this->data = $data;
-        $this->predecessors = new SplObjectStorage();
-        $this->successors= new SplObjectStorage();
+        $this->predecessors = new VertexSet();
+        $this->successors= new VertexSet();
         $this->outgoing_edges = new SplObjectStorage();
         $this->incoming_edges = new SplObjectStorage();
         $this->logger = new NullLogger();
@@ -134,7 +134,26 @@ class Vertex {
     /**
      * @return string
      */
+    public
+    function get_label() {
+        return $this->__toString();
+    }
+
+    /**
+     * @return string
+     */
     public function __toString() {
-        return "";
+        $data = $this->get_data();
+        if (is_object($data)) {
+            $hash = spl_object_hash($data);
+        } else {
+            $hash = $data;
+        }
+
+        if (!is_string($hash)) {
+            $hash = "";
+        }
+
+        return $hash;
     }
 }
